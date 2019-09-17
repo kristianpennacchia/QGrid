@@ -41,6 +41,7 @@ public struct QGrid<Data, Content>: View
   private let hSpacing: CGFloat
   private let vPadding: CGFloat
   private let hPadding: CGFloat
+  private let hAlignment: HorizontalAlignment
   
   private let data: [Data.Element]
   private let content: (Data.Element) -> Content
@@ -66,6 +67,7 @@ public struct QGrid<Data, Content>: View
               hSpacing: CGFloat = 10,
               vPadding: CGFloat = 10,
               hPadding: CGFloat = 10,
+              hAlignment: HorizontalAlignment = .center,
               content: @escaping (Data.Element) -> Content) {
     self.data = data.map { $0 }
     self.content = content
@@ -75,6 +77,7 @@ public struct QGrid<Data, Content>: View
     self.hSpacing = hSpacing
     self.vPadding = vPadding
     self.hPadding = hPadding
+    self.hAlignment = hAlignment
   }
   
   // MARK: - COMPUTED PROPERTIES
@@ -95,7 +98,7 @@ public struct QGrid<Data, Content>: View
   public var body : some View {
     GeometryReader { geometry in
       ScrollView(showsIndicators: false) {
-        VStack(spacing: self.vSpacing) {
+        VStack(alignment: self.hAlignment, spacing: self.vSpacing) {
           ForEach((0..<self.rows).map { QGridIndex(id: $0) }) { row in
             self.rowAtIndex(row.id * self.cols,
                             geometry: geometry)
